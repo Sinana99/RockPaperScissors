@@ -1,62 +1,102 @@
+var pcScore = 0
+var playerScore = 0
+
+
+if (pcScore >= 5) {
+    console.log("end!!!!")
+    
+  }
+    
+
+
 function getComputerChoice() {
     let choice =  Math.round(Math.random()*2)
     if (choice === 0) {
-     choice = "Rock"
+     choice = "rock"
     } else if (choice === 1) {
-     choice = "Paper"
+     choice = "paper"
     } else {
-     choice = "Scissors"
+     choice = "scissors"
     }
     
     return choice
  }
+
+ const buttons = document.querySelectorAll("button");
+
+
+ buttons.forEach((button) => {
+
+    button.addEventListener("click", () => {
+        playRound(button.id)
+        ending()
+    })
+ })
+
+ function ending() {
+    if (playerScore === 5 || pcScore === 5) {
+        console.log("END")
+        const score = document.querySelector(".score")
+        score.remove()
+        buttons.forEach((button) => {
+        button.remove()
+        })
+        const result = document.createElement("div");
+        if (playerScore === 5) {
+            result.textContent = "You won!"
+            result.classList.add("win");
+        } else {
+            result.textContent = "You lost:("
+            result.classList.add("lose");
+            console.log(pcScore, "pc score")
+            
+
+        }
+        document.body.appendChild(result);
+
+ }}
+
  
+const container = document.querySelector(".score")
+const round = document.createElement("h5")
+
+
+const score = document.createElement("div")
+score.classList.add("score")
+
+
+
+const content = document.createElement("div")
+content.classList.add("content");
+round.classList.add("round");
+container.appendChild(round);
+container.appendChild(score)
+content.textContent = `${playerScore} - ${pcScore}` 
+
+container.appendChild(content)
+
  
- function playRound(playerSelection, computerSelection) {
-     console.log(playerSelection)
-     playerSelection = playerSelection.toLowerCase();
-     computerSelection = computerSelection.toLowerCase();
-     console.log(computerSelection)
-     if (playerSelection === "rock" && computerSelection === "paper") {
-         return "You Lose"
-     } else if (playerSelection === "paper" && computerSelection === "scissors") {
-         return "You Lose"
-     } else if (playerSelection === "scissors" && computerSelection === "rock") {
-         return "You Lose"
+ function playRound(playerSelection) {
+    content.textContent = `${pcScore} - ${playerScore}` 
+     computerSelection = getComputerChoice();
+     console.log(computerSelection, "this is pc")
+     
+     if ((playerSelection === "rock" && computerSelection === "paper") || (playerSelection === "paper" && computerSelection === "scissors") || (playerSelection === "scissors" && computerSelection === "rock"))
+        
+      { pcScore += 1;
+        round.textContent = `You lost! Computer picked ${computerSelection}`;
+
      } else if (playerSelection === computerSelection) {
-         return "Its a Tie"
+        
+        round.textContent = `Draw! Computer picked ${computerSelection}` ;
+         
      } else {
-         return "You Win!"
+        playerScore += 1;
+        round.textContent = `You won! Computer picked ${computerSelection}`
      }
+     content.textContent = `${playerScore} - ${pcScore}`
      
   }
- 
- var computerSelection = getComputerChoice();
- var playerSelection = ""
- 
- function game(playerSelection, computerSelection) {
-     alert("Let's play game of Rock Paper Scissors for 5 rounds! Good luck!")
-     var yourScore = 0;
-     var pcScore = 0;
-     var result = "";
-     
-     for (i = 0; i < 5; i++) {
-     playerSelection = prompt("Whats your pick?");
-     computerSelection = getComputerChoice();
-     result = playRound(playerSelection, computerSelection)
-     if (result === "You Win!") {
-         yourScore += 1
-     } else if (result === "You Lose") {
-         pcScore += 1
-     } 
- 
-     }
-     if (yourScore > pcScore) {
-     alert('You won! ' + yourScore + ' - ' +pcScore)
-     } else if (pcScore > yourScore) {
-         alert('You lost! ' + yourScore + ' - ' +pcScore)
-     } else {
-         alert('Its a tie! ' + yourScore + ' - ' + pcScore)
-     }
- };
- game(playerSelection, computerSelection)
+
+  
+
